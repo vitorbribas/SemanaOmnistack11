@@ -50,3 +50,22 @@ form input {
 .button:hover {
   filter: brightness(90%);
 }
+
+.bank-link {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  color: #41414d;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.bank-link svg {
+  margin-right: 8px;
+}
+
+.bank-link {
+  opacity: 0.8s;
+}
