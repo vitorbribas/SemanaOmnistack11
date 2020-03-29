@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as mailComposer from 'expo-mail-composer';
 
@@ -25,7 +25,7 @@ export default function IncidentDetails() {
   }
 
   function sendWhatsapp() {
-    
+    Linking.openURL(`whatsapp://send?phone=556182050105&text=${message}`);
   }
 
   return (
@@ -56,7 +56,7 @@ export default function IncidentDetails() {
         <Text style={styles.heroDescription}>Entre em contato</Text>
 
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.action} onPress={() => {}}>
+          <TouchableOpacity style={styles.action} onPress={sendWhatsapp}>
             <Text style={styles.actionText}> Whatsapp </Text>
           </TouchableOpacity>
 
