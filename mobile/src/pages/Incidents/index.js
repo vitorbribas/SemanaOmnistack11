@@ -12,16 +12,32 @@ export default function Incidents() {
   const navigation = useNavigation();
   const [incidents, setIncidents] = useState([]);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   function navigateToDetails(incident) {
     navigation.navigate('IncidentsDetails', { incident });
   }
 
   async function loadIncidents() {
-    const response = await api.get('incidents');
+    if (loading) {
+      return;
+    }
 
-    setIncidents(response.data);
+    if (total > 0 && incidents.length === total) {
+      return;
+    }
+
+    setLoading(true);
+
+    const response = await api.get('incidents', {
+      params: { page }
+    });
+
+    setIncidents([...incidents, ...response.data]);
     setTotal(response.headers['x-total-count']);
+    setPage(page + 1);
+    setLoading(false);
   }
 
   // propriedade chamada assim que o componente é carregado
@@ -44,6 +60,8 @@ export default function Incidents() {
       <FlatList
         style={styles.incidentList}
         showsVerticalScrollIndicator={false}
+        onEndReached={loadIncidents}
+        onEndReachedThreshold={0.2}
         data={incidents}
         keyExtractor={ incident => String(incident.id) }
         renderItem={ ({ item: incident }) => (
