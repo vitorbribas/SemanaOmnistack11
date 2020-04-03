@@ -48,6 +48,10 @@ routes.get('/profile/incidents', celebrate({
   }).unknown()
 }), OngProfileController.index);
 
-routes.post('/login', SessionController.create);
+routes.post('/login', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    id: Joi.string().required()
+  })
+}), SessionController.create);
 
 module.exports = routes;
