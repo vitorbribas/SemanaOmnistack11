@@ -4,7 +4,7 @@ const connection = require('../../src/database/connection');
 const faker = require('faker');
 
 describe('Incident', () => {
-  beforeEach( async () => {
+  beforeAll( async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
   });
@@ -24,5 +24,19 @@ describe('Incident', () => {
       });
 
     expect(response.body).toHaveProperty('id');
+  });
+
+  it('should be able to list ONG incidents', async () => {
+    const response = await request(app)
+      .get('/profile/incidents')
+      .set('Authorization', '1edf504b')
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(
+          {id: expect.any(Number)}
+        )
+      ])
+    );
   });
 });
