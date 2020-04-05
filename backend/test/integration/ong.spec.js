@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../../src/app');
 const connection = require('../../src/database/connection');
+const faker = require('faker/locale/pt_BR');
 
 describe('ONG', () => {
   beforeAll( async () => {
@@ -16,11 +17,11 @@ describe('ONG', () => {
     const response = await request(app)
       .post('/ongs')
       .send({
-        name: "Green Peance3",
-        email: "greenpeace@gmail.com",
-        whatsapp: "61998174745",
-        city: "Brasilia",
-        uf: "DF"
+        name: faker.company.companyName(),
+        email: faker.internet.email(),
+        whatsapp: faker.phone.phoneNumberFormat().replace(/[()]|[" "]|[-]/gi,""),
+        city: faker.address.city(),
+        uf: faker.address.stateAbbr()
       });
 
     expect(response.body).toHaveProperty('id');
